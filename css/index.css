@@ -3843,6 +3843,7 @@ h1.page-title + .tag-cloud-list {
   -o-transition: box-shadow 0.3s ease-in-out;
   -ms-transition: box-shadow 0.3s ease-in-out;
   transition: box-shadow 0.3s ease-in-out;
+  font-family: 'STKaiti', KaiTi, SimHei;
 }
 #post .post-copyright:before {
   position: absolute;
@@ -3857,7 +3858,7 @@ h1.page-title + .tag-cloud-list {
   box-shadow: 0 0 8px 0 rgba(232,237,250,0.6), 0 2px 4px 0 rgba(232,237,250,0.5);
 }
 #post .post-copyright .post-copyright-meta {
-  color: #fff;
+  color: #b0e0e6;
   font-weight: bold;
 }
 #post .post-copyright .post-copyright-info {
