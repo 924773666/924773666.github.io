@@ -1,0 +1,537 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>PLSQL简单入门 | 记录生活の博客</title><meta name="keywords" content="PLSQL"><meta name="author" content="记录生活の博客"><meta name="copyright" content="记录生活の博客"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PL&#x2F;SQL简单入门1.预定义异常              命名的系统异常         产生的原因                   ACCESS_INTO_NULL         未定义的对象                   CASE_NOT_FOUND         CASE中若未包含相应的THEN，并且没有设置ELSE时                   COLLECTIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PLSQL简单入门">
+<meta property="og:url" content="http://www.xiahao.cc/2022/10/30/oracle01/index.html">
+<meta property="og:site_name" content="记录生活の博客">
+<meta property="og:description" content="PL&#x2F;SQL简单入门1.预定义异常              命名的系统异常         产生的原因                   ACCESS_INTO_NULL         未定义的对象                   CASE_NOT_FOUND         CASE中若未包含相应的THEN，并且没有设置ELSE时                   COLLECTIO">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2022/07/17/62d418524e477.jpg">
+<meta property="article:published_time" content="2022-10-30T12:16:36.000Z">
+<meta property="article:modified_time" content="2022-10-30T12:27:20.335Z">
+<meta property="article:author" content="记录生活の博客">
+<meta property="article:tag" content="PLSQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2022/07/17/62d418524e477.jpg"><link rel="shortcut icon" href="/img/touxiang.jpg"><link rel="canonical" href="http://www.xiahao.cc/2022/10/30/oracle01/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 记录生活の博客","link":"链接: ","source":"来源: 记录生活の博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PLSQL简单入门',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-30 20:27:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/rightMenu.css"><link rel="stylesheet" type="text/css" href="/css/custom.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/css/function.min.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-clock/lib/clock.min.css" /><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-sharp fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 总览</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-anchor"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa-solid fa-music"></i><span> 相册</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa-solid fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-brands fa-bilibili"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-sharp fa-solid fa-users"></i><span> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-sharp fa-solid fa-comment"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-person"></i><span> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bu.dusays.com/2022/07/17/62d418524e477.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">记录生活の博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-sharp fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-list"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 总览</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-anchor"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photo/"><i class="fa-fw fa-solid fa-music"></i><span> 相册</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa-solid fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book faa-float animated"></i><span> 书单</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fa-brands fa-bilibili"></i><span> 番剧</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-sharp fa-solid fa-users"></i><span> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-sharp fa-solid fa-comment"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-solid fa-person"></i><span> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PLSQL简单入门<a class="post-edit-link" href="null_posts/oracle01.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-30T12:16:36.000Z" title="发表于 2022-10-30 20:16:36">2022-10-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-30T12:27:20.335Z" title="更新于 2022-10-30 20:27:20">2022-10-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Oracle/">Oracle</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PLSQL简单入门"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="PL-SQL简单入门"><a href="#PL-SQL简单入门" class="headerlink" title="PL/SQL简单入门"></a><center>PL/SQL简单入门</center></h1><h2 id="1-预定义异常"><a href="#1-预定义异常" class="headerlink" title="1.预定义异常"></a>1.预定义异常</h2><table>
+    <tr>
+        <td>命名的系统异常</td>
+        <td>产生的原因</td>
+    </tr>
+    <tr>
+        <td>ACCESS_INTO_NULL</td>
+        <td>未定义的对象</td>
+    </tr>
+    <tr>
+        <td>CASE_NOT_FOUND</td>
+        <td>CASE中若未包含相应的THEN，并且没有设置ELSE时</td>
+    </tr>
+    <tr>
+        <td>COLLECTION_IS_NULL</td>
+        <td>集合元素未初始化</td>
+    </tr>
+    <tr>
+        <td>CURSER_ALREADY_OPEN</td>
+        <td>游标已经打开</td>
+    </tr>
+    <tr>
+        <td>DUP_VAL_ON_INDEX</td>
+        <td>唯一索引对应的列上有重复的值</td>
+    </tr>
+    <tr>
+        <td>INVALID_CURSOR</td>
+        <td>在不合法的游标上进行操作</td>
+    </tr>
+    <tr>
+        <td>INVALID_NUMBER</td>
+        <td>内嵌的SQL语句不能将字符转换成数字</td>
+    </tr>
+    <tr>
+        <td><strong>NO_DATA_FOUND</strong></td>
+        <td><strong>使用select into 未返回行</strong></td>
+    </tr>
+    <tr>
+        <td><strong>TOO_MANY_ROWS</strong></td>
+        <td><strong>执行select into 时，结果集超过一行</strong></td>
+    </tr>
+    <tr>
+        <td>ZERO_DIVIDE</td>
+        <td>除数为0</td>
+    </tr>
+    <tr>
+        <td>SUBSCRIPT_BEYOND_COUNT</td>
+        <td>元素下标超过嵌套表或VARRAY的最大值</td>
+    </tr>
+    <tr>
+        <td>SUBSCRIPT_OUTSIDE_LIMIT</td>
+        <td>使用嵌套表或VARRAY时，将下标指定为负数</td>
+    </tr>
+    <tr>
+        <td>VALUE_ERROR</td>
+        <td>赋值时，变量长度不足以容纳实际数据</td>
+    </tr>
+    <tr>
+        <td>LOGIN_DENIED</td>
+        <td>PL/SQL，应用程序连接到oracle数据库时，提供了不正确的用户名或密码</td>
+    </tr>
+    <tr>
+        <td>NOT_LOGGED_ON</td>
+        <td>PL/SQL，应用程序在没有连接oracle数据库的情况下访问数据</td>
+    </tr>
+    <tr>
+        <td>PROGRAN_ERROR</td>
+        <td>PL/SQL，内部问题，可能需要重装数据字典 和 PL/SQL系统包 </td>
+    </tr>
+    <tr>
+        <td>ROWTYPE_MISMATCH</td>
+        <td>宿主游标变量与PL/SQL游标变量的返回类型不兼容</td>
+    </tr>
+    <tr>
+        <td>SELF_IS_NULL</td>
+        <td>使用对象类型时，在null对象上调用对象方法</td>
+    </tr>
+    <tr>
+        <td>STORAGE_ERROR</td>
+        <td>运行PL/SQL时，超出内存空间</td>
+    </tr>
+    <tr>
+        <td>SYS_INVALID_ID</td>
+        <td>无效rowid字符串</td>
+    </tr>
+    <tr>
+        <td>TIMEOUT_ON_RESOURCE</td>
+        <td>oracle在等待资源时超时</td>
+    </tr> 
+</table>
+
+
+<h3 id="1-1异常语法结构"><a href="#1-1异常语法结构" class="headerlink" title="1.1异常语法结构"></a>1.1异常语法结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EXCEPTION</span><br><span class="line">	WHEN 异常类型 THEN</span><br><span class="line">	处理逻辑</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-条件判断"><a href="#2-条件判断" class="headerlink" title="2.条件判断"></a>2.条件判断</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">IF 条件 THEN</span><br><span class="line">	业务</span><br><span class="line">ELSE IF</span><br><span class="line">	业务</span><br><span class="line">ELSE</span><br><span class="line">	业务</span><br><span class="line">END IF;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-循环"><a href="#3-循环" class="headerlink" title="3.循环"></a>3.循环</h2><h3 id="3-1-无条件循环"><a href="#3-1-无条件循环" class="headerlink" title="3.1 无条件循环"></a>3.1 无条件循环</h3><h4 id="3-1-1-结构"><a href="#3-1-1-结构" class="headerlink" title="3.1.1 结构"></a>3.1.1 结构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LOOP</span><br><span class="line">	业务</span><br><span class="line">END LOOP;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-2-例子"><a href="#3-1-2-例子" class="headerlink" title="3.1.2 例子"></a>3.1.2 例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DECLARE</span><br><span class="line">  V_NUM NUMBER:=1;</span><br><span class="line">BEGIN</span><br><span class="line">  LOOP</span><br><span class="line">    DBMS_OUTPUT.put_line(V_NUM);</span><br><span class="line">    V_NUM:=V_NUM+1;</span><br><span class="line">    EXIT WHEN V_NUM&gt;100;</span><br><span class="line">  END LOOP;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-条件循环"><a href="#3-2-条件循环" class="headerlink" title="3.2 条件循环"></a>3.2 条件循环</h3><h4 id="3-2-1-结构"><a href="#3-2-1-结构" class="headerlink" title="3.2.1 结构"></a>3.2.1 结构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WHILE	条件</span><br><span class="line">LOOP</span><br><span class="line">	业务</span><br><span class="line">END LOOP;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-2-例子"><a href="#3-2-2-例子" class="headerlink" title="3.2.2 例子"></a>3.2.2 例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DECLARE</span><br><span class="line">  V_NUM NUMBER:=1;</span><br><span class="line">BEGIN</span><br><span class="line">  WHILE V_NUM&lt;=100</span><br><span class="line">  LOOP</span><br><span class="line">    DBMS_OUTPUT.put_line(V_NUM);</span><br><span class="line">    V_NUM:=V_NUM+1;</span><br><span class="line">  END LOOP;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-3-FOR循环"><a href="#3-3-FOR循环" class="headerlink" title="3.3 FOR循环"></a>3.3 FOR循环</h3><h4 id="3-3-1-结构"><a href="#3-3-1-结构" class="headerlink" title="3.3.1 结构"></a>3.3.1 结构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FOR 变量 IN  初始值..终止值   -- IN 后+REVERSE降序  默认升序</span><br><span class="line"> LOOP</span><br><span class="line">	业务</span><br><span class="line">END LOOP;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-2-例子"><a href="#3-3-2-例子" class="headerlink" title="3.3.2 例子"></a>3.3.2 例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DECLARE</span><br><span class="line">  V_NUM NUMBER:=1;</span><br><span class="line">BEGIN</span><br><span class="line">  FOR V_NUM  IN REVERSE  5..100</span><br><span class="line">  LOOP</span><br><span class="line">    DBMS_OUTPUT.put_line(V_NUM);</span><br><span class="line">  END LOOP;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-游标"><a href="#4-游标" class="headerlink" title="4.游标"></a>4.游标</h2><p>是系统为用户开设的一个数据缓冲区，存放sql语句执行的结果。我们可以把游标理解为PL/SQL中的结果集。</p>
+<h3 id="4-1-结构"><a href="#4-1-结构" class="headerlink" title="4.1 结构"></a>4.1 结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">--声明</span><br><span class="line">CURSOR 游标名称 IS SQL语句；</span><br><span class="line">--使用</span><br><span class="line">OPEN 游标名称;</span><br><span class="line">LOOP</span><br><span class="line">	FETCH 游标名称 INTO 变量			--FETCH类似于提取</span><br><span class="line">	EXIT WHEN 游标名称%NOTFOUND</span><br><span class="line">END LOOP;</span><br><span class="line">CLOSE 游标名称;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-例子"><a href="#4-2-例子" class="headerlink" title="4.2 例子"></a>4.2 例子</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">--游标输出结果</span><br><span class="line">DECLARE</span><br><span class="line"> CURSOR CUR_PRICETABLE IS SELECT * FROM T_PRICETABLE WHERE OWNERTYPEID=1;</span><br><span class="line"> V_PRICETABLE T_PRICETABLE%ROWTYPE;</span><br><span class="line">BEGIN</span><br><span class="line">  OPEN CUR_PRICETABLE;  </span><br><span class="line">       LOOP </span><br><span class="line">        FETCH CUR_PRICETABLE INTO V_PRICETABLE;</span><br><span class="line">        EXIT WHEN CUR_PRICETABLE%NOTFOUND;</span><br><span class="line">        DBMS_OUTPUT.put_line(V_PRICETABLE.PRICE);</span><br><span class="line">       END LOOP;</span><br><span class="line">  CLOSE CUR_PRICETABLE;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-带参数的游标"><a href="#4-3-带参数的游标" class="headerlink" title="4.3 带参数的游标"></a>4.3 带参数的游标</h3><h4 id="4-3-1-例子"><a href="#4-3-1-例子" class="headerlink" title="4.3.1 例子"></a>4.3.1 例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">--游标输出结果</span><br><span class="line">DECLARE</span><br><span class="line"> V_MAXNUM NUMBER:=9;</span><br><span class="line"> CURSOR CUR_PRICETABLE(v_ownertype number,V_MINNUM NUMBER) IS </span><br><span class="line">        SELECT * FROM T_PRICETABLE WHERE OWNERTYPEID=v_ownertype AND MINNUM BETWEEN V_MINNUM AND V_MAXNUM;</span><br><span class="line"> V_PRICETABLE T_PRICETABLE%ROWTYPE;</span><br><span class="line">BEGIN</span><br><span class="line">  OPEN CUR_PRICETABLE(1,5);  </span><br><span class="line">       LOOP </span><br><span class="line">        FETCH CUR_PRICETABLE INTO V_PRICETABLE;</span><br><span class="line">        EXIT WHEN CUR_PRICETABLE%NOTFOUND;</span><br><span class="line">        DBMS_OUTPUT.put_line(V_PRICETABLE.PRICE);</span><br><span class="line">       END LOOP;</span><br><span class="line">  CLOSE CUR_PRICETABLE;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-for循环-带参数游标"><a href="#4-4-for循环-带参数游标" class="headerlink" title="4.4 for循环 带参数游标"></a>4.4 for循环 带参数游标</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DECLARE</span><br><span class="line"> V_MAXNUM NUMBER:=9;</span><br><span class="line"> CURSOR CUR_PRICETABLE(v_ownertype number,V_MINNUM NUMBER) IS </span><br><span class="line">        SELECT * FROM T_PRICETABLE WHERE OWNERTYPEID=v_ownertype AND MINNUM BETWEEN V_MINNUM AND V_MAXNUM;</span><br><span class="line">BEGIN</span><br><span class="line">	FOR V_PRICETABLE IN CUR_PRICETABLE(1,5) </span><br><span class="line">       LOOP </span><br><span class="line">        DBMS_OUTPUT.put_line(V_PRICETABLE.PRICE);</span><br><span class="line">       END LOOP;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-存储函数"><a href="#5-存储函数" class="headerlink" title="5.存储函数"></a>5.存储函数</h2><ul>
+<li>自定义函数</li>
+</ul>
+<h3 id="5-1-语法结构"><a href="#5-1-语法结构" class="headerlink" title="5.1 语法结构"></a>5.1 语法结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE[OR REPLACE] FUNCTION 函数名</span><br><span class="line">--（参数名称 参数类型，参数名称 参数类型）</span><br><span class="line">RETURN 结果变量数据类型</span><br><span class="line">IS</span><br><span class="line">	变量声明部分;</span><br><span class="line">BEGIN</span><br><span class="line">	业务;</span><br><span class="line">	RETURN 结果变量;</span><br><span class="line">EXCEPTION </span><br><span class="line">	异常处理;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-例子"><a href="#5-2-例子" class="headerlink" title="5.2 例子"></a>5.2 例子</h3><p>根据地址ID查询地址名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create or replace function XIAHAO.fn_getaddress(v_id number)</span><br><span class="line">return  t_address.name%type</span><br><span class="line">is</span><br><span class="line">v_name t_address.name%type;</span><br><span class="line">begin</span><br><span class="line">  select  name into v_name from t_address where id=v_id;</span><br><span class="line">exception</span><br><span class="line">  when NO_DATA_FOUND then</span><br><span class="line">  v_name:=&#x27;未查询到&#x27;;</span><br><span class="line">return v_name;</span><br><span class="line">end;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-存储过程"><a href="#6-存储过程" class="headerlink" title="6.存储过程"></a>6.存储过程</h2><p>PL/SQL块，存储于数据库中，是数据库对象的一种，应用程序可以调用存储过程，执行相应逻辑。</p>
+<h3 id="6-1和函数的区别"><a href="#6-1和函数的区别" class="headerlink" title="6.1和函数的区别"></a>6.1和函数的区别</h3><ul>
+<li>函数有返回值，且必须返回；而存储过程没有返回值，可以通过传出参数返回多个值。</li>
+<li>函数可以在select中直接使用，存储过程不行。过程多数是被应用程序所调用。</li>
+<li>函数一般封装一个查询结果，存储过程一般都封装一段事务代码。</li>
+</ul>
+<h3 id="6-2结构"><a href="#6-2结构" class="headerlink" title="6.2结构"></a>6.2结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE [OR REPLACE] PROCEDURE 存储过程名称</span><br><span class="line">(参数名 类型，参数名 类型)</span><br><span class="line">IS|AS</span><br><span class="line">	变量声明;</span><br><span class="line">BEGIN </span><br><span class="line">	业务;</span><br><span class="line">EXCEPTION</span><br><span class="line">	处理;</span><br><span class="line">END ;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>过程参数的三种模式：<ul>
+<li>IN 传入参数 默认</li>
+<li>OUT 传出参数，返回程序运行结果</li>
+<li>IN OUT 传入传出参数 </li>
+</ul>
+</li>
+</ul>
+<h3 id="6-3-例子"><a href="#6-3-例子" class="headerlink" title="6.3 例子"></a>6.3 例子</h3><h4 id="6-3-1-创建不带传出参数的存储过程：添加业主信息"><a href="#6-3-1-创建不带传出参数的存储过程：添加业主信息" class="headerlink" title="6.3.1 创建不带传出参数的存储过程：添加业主信息"></a>6.3.1 创建不带传出参数的存储过程：添加业主信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE PROCEDURE XIAHAO.PRO_OWNERS_ADD</span><br><span class="line">(</span><br><span class="line">V_NAME VARCHAR2, --名称</span><br><span class="line">V_ADDRESSID NUMBER, --地址id</span><br><span class="line">V_HOUSENUMBER VARCHAR2,  --门牌号</span><br><span class="line">V_WATERMETER VARCHAR2, --水表号</span><br><span class="line">V_OWNERTYPEID NUMBER  --业主类型id</span><br><span class="line">)</span><br><span class="line">IS</span><br><span class="line">BEGIN</span><br><span class="line">  INSERT INTO T_OWNERS</span><br><span class="line">  VALUES(seq_owners.nextval,V_NAME,V_ADDRESSID,V_HOUSENUMBER,V_WATERMETER,SYSDATE,V_OWNERTYPEID);</span><br><span class="line">  COMMIT; </span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-3-2-创建带传出参数的存储过程：传出新增业主的id"><a href="#6-3-2-创建带传出参数的存储过程：传出新增业主的id" class="headerlink" title="6.3.2 创建带传出参数的存储过程：传出新增业主的id"></a>6.3.2 创建带传出参数的存储过程：传出新增业主的id</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE PROCEDURE XIAHAO.PRO_OUT_OWNERS_ADD</span><br><span class="line">(</span><br><span class="line">V_NAME VARCHAR2, --名称</span><br><span class="line">V_ADDRESSID NUMBER, --地址id</span><br><span class="line">V_HOUSENUMBER VARCHAR2,  --门牌号</span><br><span class="line">V_WATERMETER VARCHAR2, --水表号</span><br><span class="line">V_OWNERTYPEID NUMBER,  --业主类型id</span><br><span class="line">V_ID OUT NUMBER </span><br><span class="line">)</span><br><span class="line">IS</span><br><span class="line">BEGIN</span><br><span class="line">  SELECT seq_owners.nextval INTO V_ID FROM DUAL;</span><br><span class="line">  INSERT INTO T_OWNERS</span><br><span class="line">  VALUES(V_ID,V_NAME,V_ADDRESSID,V_HOUSENUMBER,V_WATERMETER,SYSDATE,V_OWNERTYPEID);</span><br><span class="line">  COMMIT; </span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-4-调用"><a href="#6-4-调用" class="headerlink" title="6.4 调用"></a>6.4 调用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">CALL XIAHAO.PRO_OWNERS_ADD(&#x27;瞿夏浩&#x27;,6,&#x27;6-1&#x27;,&#x27;30454&#x27;,3);</span><br><span class="line"></span><br><span class="line">--或者使用PLSQL</span><br><span class="line">declare</span><br><span class="line">BEGIN </span><br><span class="line">xiahao.PRO_OWNERS_ADD(&#x27;瞿夏浩1&#x27;,6,&#x27;6-1&#x27;,&#x27;30454&#x27;,3,v_id);</span><br><span class="line">END;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--调用有out的存储过程</span><br><span class="line">declare</span><br><span class="line">v_id number;</span><br><span class="line">BEGIN </span><br><span class="line">xiahao.PRO_OUT_OWNERS_ADD(&#x27;瞿夏浩1&#x27;,6,&#x27;6-1&#x27;,&#x27;30454&#x27;,3,v_id);</span><br><span class="line">dbms_output.put_line(v_id);</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-触发器"><a href="#7-触发器" class="headerlink" title="7.触发器"></a>7.触发器</h2><p>和表相关联，存储的PL/SQL程序，每当一个特定的数据操作语句，（insert，update，delete）在指定的表上发出时，oracle自动执行触发器中定义的语句序列。</p>
+<h3 id="7-1-作用于"><a href="#7-1-作用于" class="headerlink" title="7.1 作用于"></a>7.1 作用于</h3><ul>
+<li>数据确认</li>
+<li>实施复杂的安全检查</li>
+<li>做审计，跟踪表上所作的数据操作等</li>
+<li>数据的备份和同步</li>
+</ul>
+<h3 id="7-2-触发器的分类"><a href="#7-2-触发器的分类" class="headerlink" title="7.2 触发器的分类"></a>7.2 触发器的分类</h3><ul>
+<li>前置触发器 (BEFORE)</li>
+<li>后置触发器(AFTER)</li>
+</ul>
+<h3 id="7-3-创建触发器"><a href="#7-3-创建触发器" class="headerlink" title="7.3 创建触发器"></a>7.3 创建触发器</h3><h4 id="7-3-1语法"><a href="#7-3-1语法" class="headerlink" title="7.3.1语法"></a>7.3.1语法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER 触发器名称</span><br><span class="line">	BEFORE | AFTER</span><br><span class="line">	[DELETE][[OR][INSERT]] [[OR]UPDATE [OF 列名]]</span><br><span class="line">	ON 表名</span><br><span class="line">	[FOR EACH ROW ] [WHEN (条件)]</span><br><span class="line">DECLARE</span><br><span class="line">	...</span><br><span class="line">BEGIN</span><br><span class="line">	PLSQL块</span><br><span class="line">END;</span><br><span class="line">--FOR EACH ROW作用：标注此触发器是行级触发器   不写就是语句块触发器 </span><br></pre></td></tr></table></figure>
+
+<h4 id="7-3-2-在触发器中出发语句于伪记录变量的值"><a href="#7-3-2-在触发器中出发语句于伪记录变量的值" class="headerlink" title="7.3.2 在触发器中出发语句于伪记录变量的值"></a>7.3.2 在触发器中出发语句于伪记录变量的值</h4><table>
+    <tr>
+        <td>触发语句</td>
+        <td>:old</td>
+        <td>:new</td>
+    </tr>
+    <tr>
+        <td>insert</td>
+        <td>所有字段都是空null</td>
+        <td>将要插入的数据</td>
+    </tr>
+    <tr>
+        <td>update</td>
+        <td>更新以前改行的值</td>
+        <td>更新后的值</td>
+    </tr>
+    <tr>
+        <td>delete</td>
+        <td>删除以前改行的数据</td>
+        <td>所有字段都为空null</td>
+    </tr>
+</table>
+### 7.4 例子
+
+<h4 id="7-4-1-前置触发器"><a href="#7-4-1-前置触发器" class="headerlink" title="7.4.1 前置触发器"></a>7.4.1 前置触发器</h4><p>当用户输入本月累计表数据后，自动计算出本月使用数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER XIAHAO.TRI_ACCOUNT_UPDATENUM1</span><br><span class="line">BEFORE</span><br><span class="line">UPDATE OF NUM1</span><br><span class="line">ON XIAHAO.T_ACCOUNT</span><br><span class="line">FOR EACH ROW </span><br><span class="line">DECLARE</span><br><span class="line">BEGIN </span><br><span class="line">  :NEW.USENUM:=:NEW.NUM1-:NEW.NUM0;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-2-后置触发器"><a href="#7-4-2-后置触发器" class="headerlink" title="7.4.2 后置触发器"></a>7.4.2 后置触发器</h4><p>备份</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE TRIGGER TRI_WONERS_LOG</span><br><span class="line">AFTER </span><br><span class="line">UPDATE OF NAME </span><br><span class="line">ON T_OWNERS</span><br><span class="line">FOR EACH ROW </span><br><span class="line">DECLARE</span><br><span class="line">	</span><br><span class="line">BEGIN</span><br><span class="line">	INSERT INTO T_OWNERS_LOG VALUES(SYSDATE,:NEW.ID,:OLD.NAME,:NEW.NAME);</span><br><span class="line">	--触发器不需要commit  </span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-PACKAGE"><a href="#8-PACKAGE" class="headerlink" title="8.PACKAGE"></a>8.PACKAGE</h2><h3 id="8-1-创建包规范"><a href="#8-1-创建包规范" class="headerlink" title="8.1 创建包规范"></a>8.1 创建包规范</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CREATE OR REPLACE PACKAGE XIAHAO.PAC_TEST </span><br><span class="line">IS | AS		</span><br><span class="line">	--定义公用常量、变量、游标、过程、函数等  不能有实现</span><br><span class="line">  PROCEDURE PRO_OWNERS_ADD</span><br><span class="line">  (</span><br><span class="line">  V_NAME VARCHAR2,</span><br><span class="line">  V_ADDRESSID NUMBER,</span><br><span class="line">  V_HOUSENUMBER VARCHAR2,</span><br><span class="line">  V_WATERMETER VARCHAR2,</span><br><span class="line">  V_OWNERTYPEID NUMBER</span><br><span class="line">  );</span><br><span class="line">END PAC_TEST;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-创建包体"><a href="#8-2-创建包体" class="headerlink" title="8.2 创建包体"></a>8.2 创建包体</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">create or replace package body XIAHAO.PAC_TEST</span><br><span class="line">is | AS</span><br><span class="line">	--定义私有常量、变量、游标、过程、函数等</span><br><span class="line">	实现公用过程和函数</span><br><span class="line">       PROCEDURE PRO_OWNERS_ADD</span><br><span class="line">        (</span><br><span class="line">        V_NAME VARCHAR2,</span><br><span class="line">        V_ADDRESSID NUMBER,</span><br><span class="line">        V_HOUSENUMBER VARCHAR2,</span><br><span class="line">        V_WATERMETER VARCHAR2,</span><br><span class="line">        V_OWNERTYPEID NUMBER</span><br><span class="line">        )</span><br><span class="line">        IS</span><br><span class="line">        BEGIN</span><br><span class="line">          INSERT INTO XIAHAO.T_OWNERS</span><br><span class="line">          VALUES(XIAHAO.seq_owners.nextval,V_NAME,V_ADDRESSID,V_HOUSENUMBER,V_WATERMETER,SYSDATE,V_OWNERTYPEID);</span><br><span class="line">          COMMIT; </span><br><span class="line">        END;</span><br><span class="line">end PAC_TEST;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://www.xiahao.cc">记录生活の博客</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.xiahao.cc/2022/10/30/oracle01/">http://www.xiahao.cc/2022/10/30/oracle01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.xiahao.cc" target="_blank">记录生活の博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PLSQL/">PLSQL</a></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2022/07/17/62d418524e477.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-pay.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat-pay.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/10/28/butterfly01/"><img class="next-cover" src="https://bu.dusays.com/2022/07/31/62e6702b83bd8.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">butterfly魔改拓展</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">记录生活の博客</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://space.bilibili.com/1498812892" target="_blank" title="bilibili"><i class="fa-brands fa-bilibili"></i></a><a class="social-icon" href="https://github.com/924773666" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Hello,World!</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PL-SQL%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="toc-number">1.</span> <span class="toc-text">PL&#x2F;SQL简单入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A2%84%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-number">1.1.</span> <span class="toc-text">1.预定义异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E5%BC%82%E5%B8%B8%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1异常语法结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-number">1.2.</span> <span class="toc-text">2.条件判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.3.</span> <span class="toc-text">3.循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%97%A0%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 无条件循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-1-%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">3.1.1 结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">3.1.2 例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 条件循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">3.2.1 结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">3.2.2 例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-FOR%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 FOR循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1 结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2 例子</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%B8%B8%E6%A0%87"><span class="toc-number">1.4.</span> <span class="toc-text">4.游标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E6%B8%B8%E6%A0%87"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 带参数的游标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-1-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">4.3.1 例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-for%E5%BE%AA%E7%8E%AF-%E5%B8%A6%E5%8F%82%E6%95%B0%E6%B8%B8%E6%A0%87"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 for循环 带参数游标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">5.存储函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 语法结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-number">1.6.</span> <span class="toc-text">6.存储过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1%E5%92%8C%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1和函数的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2%E7%BB%93%E6%9E%84"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E4%BE%8B%E5%AD%90"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 例子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-1-%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%B8%A6%E4%BC%A0%E5%87%BA%E5%8F%82%E6%95%B0%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%EF%BC%9A%E6%B7%BB%E5%8A%A0%E4%B8%9A%E4%B8%BB%E4%BF%A1%E6%81%AF"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">6.3.1 创建不带传出参数的存储过程：添加业主信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-2-%E5%88%9B%E5%BB%BA%E5%B8%A6%E4%BC%A0%E5%87%BA%E5%8F%82%E6%95%B0%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%EF%BC%9A%E4%BC%A0%E5%87%BA%E6%96%B0%E5%A2%9E%E4%B8%9A%E4%B8%BB%E7%9A%84id"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">6.3.2 创建带传出参数的存储过程：传出新增业主的id</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E8%B0%83%E7%94%A8"><span class="toc-number">1.6.4.</span> <span class="toc-text">6.4 调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.7.</span> <span class="toc-text">7.触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E4%BD%9C%E7%94%A8%E4%BA%8E"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 作用于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 触发器的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%88%9B%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 创建触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-1%E8%AF%AD%E6%B3%95"><span class="toc-number">1.7.3.1.</span> <span class="toc-text">7.3.1语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-2-%E5%9C%A8%E8%A7%A6%E5%8F%91%E5%99%A8%E4%B8%AD%E5%87%BA%E5%8F%91%E8%AF%AD%E5%8F%A5%E4%BA%8E%E4%BC%AA%E8%AE%B0%E5%BD%95%E5%8F%98%E9%87%8F%E7%9A%84%E5%80%BC"><span class="toc-number">1.7.3.2.</span> <span class="toc-text">7.3.2 在触发器中出发语句于伪记录变量的值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-1-%E5%89%8D%E7%BD%AE%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.7.3.3.</span> <span class="toc-text">7.4.1 前置触发器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-2-%E5%90%8E%E7%BD%AE%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.7.3.4.</span> <span class="toc-text">7.4.2 后置触发器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-PACKAGE"><span class="toc-number">1.8.</span> <span class="toc-text">8.PACKAGE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%88%9B%E5%BB%BA%E5%8C%85%E8%A7%84%E8%8C%83"><span class="toc-number">1.8.1.</span> <span class="toc-text">8.1 创建包规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E5%88%9B%E5%BB%BA%E5%8C%85%E4%BD%93"><span class="toc-number">1.8.2.</span> <span class="toc-text">8.2 创建包体</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/30/oracle01/" title="PLSQL简单入门"><img src="https://bu.dusays.com/2022/07/17/62d418524e477.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PLSQL简单入门"/></a><div class="content"><a class="title" href="/2022/10/30/oracle01/" title="PLSQL简单入门">PLSQL简单入门</a><time datetime="2022-10-30T12:16:36.000Z" title="发表于 2022-10-30 20:16:36">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/28/butterfly01/" title="butterfly魔改拓展"><img src="https://bu.dusays.com/2022/07/31/62e6702b83bd8.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="butterfly魔改拓展"/></a><div class="content"><a class="title" href="/2022/10/28/butterfly01/" title="butterfly魔改拓展">butterfly魔改拓展</a><time datetime="2022-10-28T11:35:36.000Z" title="发表于 2022-10-28 19:35:36">2022-10-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/27/hexo01/" title="前端学习的第一天"><img src="https://bu.dusays.com/2021/03/06/38a2c5cd8b44e.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端学习的第一天"/></a><div class="content"><a class="title" href="/2022/10/27/hexo01/" title="前端学习的第一天">前端学习的第一天</a><time datetime="2022-10-27T13:20:13.000Z" title="发表于 2022-10-27 21:20:13">2022-10-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By 记录生活の博客</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://demo.jerryc.me/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://metroui.org.ua/index.html "><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="fa-solid fa-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="fa-solid fa-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div><div class="rightMenu-item" id="menu-home"><i class="fa-solid fa-house"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" href="/archives/"><i class="fa-solid fa-archive"></i><span>文章归档</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="fa-solid fa-folder-open"></i><span>文章分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="fa-solid fa-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuNormal"><a class="rightMenu-item menu-link" id="menu-radompage" href="/photo/"><i class="fa-solid fa-shoe-prints"></i><span> 相   册</span></a><div class="rightMenu-item" id="menu-translate"><i class="fa-solid fa-earth-asia"></i><span>繁简切换</span></div><div class="rightMenu-item" id="menu-darkmode"><i class="fa-solid fa-moon"></i><span>切换模式</span></div></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://www.xiahao-comment.top/',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://www.xiahao-comment.top/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/rightMenu.js"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script data-pjax defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/chocolate.js"></script><script data-pjax defer src="https://npm.elemecdn.com/tzy-blog/lib/js/theme/cursor.js"></script><div class="aplayer no-destroy" data-id="2410616250" data-server="tencent" data-type="playlist" data-fixed="true" data-preload="auto" data-mini="true"> </div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://fastly.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/theme_f/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://unpkg.zhimg.com/hexo-butterfly-clock/lib/clock.min.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2022/10/30/oracle01/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://bu.dusays.com/2022/07/17/62d418524e477.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-10-30</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2022/10/30/oracle01/&quot;);" href="javascript:void(0);" alt="">PLSQL简单入门</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2022/10/30/oracle01/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2022/10/28/butterfly01/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://bu.dusays.com/2022/07/31/62e6702b83bd8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-10-28</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2022/10/28/butterfly01/&quot;);" href="javascript:void(0);" alt="">butterfly魔改拓展</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2022/10/28/butterfly01/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2022/10/27/hexo01/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://bu.dusays.com/2021/03/06/38a2c5cd8b44e.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-10-27</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2022/10/27/hexo01/&quot;);" href="javascript:void(0);" alt="">前端学习的第一天</a><div class="blog-slider__text">测试</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2022/10/27/hexo01/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400,"hOffset":20,"vOffset":-20},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
